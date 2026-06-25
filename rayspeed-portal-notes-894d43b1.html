@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>雷速 · 知识库入口</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(145deg, #fde8cd 0%, #f7d9b3 45%, #efc69e 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+            line-height: 1.6;
+            color: #2e241e;
+        }
+        .page-container {
+            max-width: 960px;
+            width: 100%;
+        }
+        /* 主卡片 */
+        .intro-card {
+            background: #fffbf6;
+            border-radius: 36px;
+            padding: 2.8rem 2.5rem;
+            box-shadow: 0 16px 40px -12px rgba(140, 80, 30, 0.25);
+            backdrop-filter: blur(2px);
+            border: 1px solid rgba(255, 245, 235, 0.6);
+            transition: box-shadow 0.2s ease;
+        }
+        .intro-card:hover {
+            box-shadow: 0 20px 48px -10px rgba(150, 80, 30, 0.3);
+        }
+        /* 标题区域 */
+        .hero-title {
+            margin-bottom: 0.5rem;
+        }
+        .hero-title h1 {
+            font-size: 2.6rem;
+            font-weight: 550;
+            letter-spacing: -0.02em;
+            color: #3c2a1e;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            flex-wrap: wrap;
+        }
+        .hero-title h1 span.keyword {
+            background: #e9d4be;
+            padding: 0.1rem 0.7rem;
+            border-radius: 60px;
+            font-size: 1.8rem;
+            font-weight: 520;
+            color: #422f21;
+        }
+        .hero-sub {
+            font-size: 1.05rem;
+            color: #6f5542;
+            border-left: 4px solid #dbb594;
+            padding-left: 1rem;
+            margin: 0.2rem 0 1.8rem 0;
+            font-weight: 380;
+        }
+        /* 网格说明区 – 知识库目录感 */
+        .guide-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.8rem 2rem;
+            margin: 2.2rem 0 2rem 0;
+        }
+        .guide-item {
+            background: #fcf6ef;
+            border-radius: 24px;
+            padding: 1.4rem 1.6rem;
+            border: 1px solid #ebddd0;
+            transition: background 0.15s, border 0.15s;
+        }
+        .guide-item:hover {
+            background: #f9efe5;
+            border-color: #dcc2ab;
+        }
+        .guide-item h3 {
+            font-size: 1.15rem;
+            font-weight: 530;
+            color: #3f2c1d;
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .guide-item h3::before {
+            content: "▹";
+            color: #b68863;
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+        .guide-item p {
+            font-size: 0.95rem;
+            color: #4d3a2b;
+            margin: 0.2rem 0 0.2rem 0;
+        }
+        .guide-item .meta-tag {
+            display: inline-block;
+            background: #e4d3c1;
+            padding: 0.1rem 0.9rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            color: #3f2c1d;
+            margin-top: 0.5rem;
+            font-weight: 410;
+            letter-spacing: 0.3px;
+        }
+        /* 提示区 + 相关信息合并卡片 */
+        .notice-info-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.6rem;
+            margin: 2.2rem 0 1.8rem 0;
+        }
+        .notice-box {
+            flex: 2 1 280px;
+            background: #f5ece2;
+            border-radius: 28px;
+            padding: 1.4rem 1.8rem;
+            border-left: 8px solid #dbbc9f;
+        }
+        .notice-box h4 {
+            font-size: 1.1rem;
+            font-weight: 520;
+            color: #3f2c1d;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .notice-box h4::before {
+            content: "ⓘ";
+            font-size: 1.2rem;
+            color: #a67b5a;
+        }
+        .notice-box p {
+            font-size: 0.95rem;
+            color: #4a3728;
+        }
+        .info-cluster {
+            flex: 1.2 1 180px;
+            background: #f5ece2;
+            border-radius: 28px;
+            padding: 1.4rem 1.6rem;
+            border-right: 4px solid #dbbc9f;
+        }
+        .info-cluster h4 {
+            font-size: 1rem;
+            font-weight: 520;
+            color: #3c2b1d;
+            margin-bottom: 0.5rem;
+        }
+        .info-cluster ul {
+            list-style: none;
+            padding: 0;
+        }
+        .info-cluster li {
+            font-size: 0.9rem;
+            color: #4d3a2b;
+            padding: 0.2rem 0;
+            display: flex;
+            align-items: baseline;
+            gap: 0.4rem;
+        }
+        .info-cluster li::before {
+            content: "•";
+            color: #b68863;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+        /* 嵌入链接句子 */
+        .link-sentence {
+            margin-top: 2rem;
+            background: #f2e5d8;
+            border-radius: 40px;
+            padding: 1.2rem 2rem;
+            font-size: 1rem;
+            color: #35271d;
+            text-align: center;
+            border: 1px solid #e5d3c0;
+        }
+        .link-sentence a {
+            color: #4d2f1b;
+            background: #e9d4be;
+            padding: 0.2rem 0.9rem;
+            border-radius: 60px;
+            text-decoration: none;
+            font-weight: 510;
+            transition: background 0.15s, color 0.15s;
+            border-bottom: 1px solid transparent;
+            display: inline-block;
+        }
+        .link-sentence a:hover {
+            background: #dbbc9f;
+            color: #2d1d13;
+        }
+        /* faq 摘要 */
+        .faq-mini {
+            margin: 2.4rem 0 0.5rem 0;
+            border-top: 2px dashed #decbb9;
+            padding-top: 1.8rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+        .faq-mini details {
+            background: #f8f0e7;
+            border-radius: 30px;
+            padding: 0.7rem 1.4rem;
+            border: 1px solid #e2d0bd;
+            transition: background 0.1s;
+        }
+        .faq-mini details[open] {
+            background: #f2e5d8;
+        }
+        .faq-mini summary {
+            font-weight: 510;
+            color: #3c2b1d;
+            cursor: pointer;
+            padding: 0.2rem 0;
+            font-size: 0.98rem;
+        }
+        .faq-mini summary::marker {
+            color: #b68863;
+        }
+        .faq-mini details p {
+            font-size: 0.9rem;
+            color: #4f3c2c;
+            margin: 0.6rem 0 0.2rem 0;
+            line-height: 1.5;
+        }
+        .footer-note {
+            margin-top: 1.8rem;
+            text-align: right;
+            font-size: 0.8rem;
+            color: #6f5542;
+            opacity: 0.75;
+        }
+        @media (max-width: 680px) {
+            .intro-card {
+                padding: 1.8rem 1.2rem;
+            }
+            .guide-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .hero-title h1 {
+                font-size: 2rem;
+            }
+            .hero-title h1 span.keyword {
+                font-size: 1.5rem;
+            }
+            .notice-info-wrap {
+                flex-direction: column;
+            }
+            .link-sentence {
+                padding: 1rem 1rem;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="page-container">
+    <div class="intro-card">
+        <div class="hero-title">
+            <h1>
+                <span>简明</span>
+                <span class="keyword">雷速</span>
+                <span>· 知识索引</span>
+            </h1>
+            <div class="hero-sub">从指南出发，围绕访问提醒与信息聚合</div>
+        </div>
+
+        <!-- 目录感网格：介绍 + 特点 + 场景等 -->
+        <div class="guide-grid">
+            <div class="guide-item">
+                <h3>关于雷速</h3>
+                <p>一个聚焦信息聚合与快速检索的轻量知识库，围绕核心索引提供清晰路径。适合需要直接获取要点、减少冗余步骤的使用者。</p>
+                <span class="meta-tag">知识中枢</span>
+            </div>
+            <div class="guide-item">
+                <h3>简明指南</h3>
+                <p>内容以卡片式目录呈现，每个模块对应一类信息。无需反复跳转，页面本身即是入口。保持克制的叙述，不堆叠无关说明。</p>
+                <span class="meta-tag">直达要点</span>
+            </div>
+            <div class="guide-item">
+                <h3>访问提醒</h3>
+                <p>建议使用稳定网络环境，部分资源可能需要允许脚本与弹窗。如遇加载缓慢，可尝试刷新或稍后重试。不推荐通过第三方镜像访问。</p>
+                <span class="meta-tag">注意事项</span>
+            </div>
+            <div class="guide-item">
+                <h3>适用场景</h3>
+                <p>日常信息查阅、快速定位术语、轻量文档参考。页面结构偏重索引，适合习惯先浏览目录再细读的使用方式。</p>
+                <span class="meta-tag">效率场景</span>
+            </div>
+        </div>
+
+        <!-- 提示区 + 相关信息区 -->
+        <div class="notice-info-wrap">
+            <div class="notice-box">
+                <h4>使用提示</h4>
+                <p>本页作为知识库的静态入口，不收集任何用户信息。所有链接指向原始资源，请留意地址栏域名。建议将常用页面加入书签，便于日常快速定位。</p>
+            </div>
+            <div class="info-cluster">
+                <h4>相关信息</h4>
+                <ul>
+                    <li>页面版本 · 2407-简</li>
+                    <li>更新频率 · 按需修订</li>
+                    <li>字符区间 · 约800-1300字</li>
+                    <li>样式基调 · 暖色渐变</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 自然嵌入 a 标签的句子，文本严格等于「雷速」 -->
+        <div class="link-sentence">
+            <p>如需要直接访问知识库核心页面，可以前往 <a href="https://rayspeed-portal-leisu.com">雷速</a> 查看最新索引。此处保持克制叙述，不附加任何引导性词汇。</p>
+        </div>
+
+        <!-- FAQ 摘要区——不设过多条目，仅做点缀 -->
+        <div class="faq-mini">
+            <details>
+                <summary>FAQ：知识库内容如何组织？</summary>
+                <p>采用分类网格与独立提示区块，每个条目对应一个主题。不采用深层嵌套，所有内容均在一页内展示，方便概览与定位。</p>
+            </details>
+            <details>
+                <summary>FAQ：是否需要注册或登录？</summary>
+                <p>本入口页面为公开静态页面，不涉及任何账户系统。所链接的资源是否要求身份验证，请以目标页面说明为准。</p>
+            </details>
+        </div>
+
+        <div class="footer-note">
+            <span>知识库入口 · 仅作索引展示</span>
+        </div>
+    </div>
+</div>
+</body>
+</html>
